@@ -1,0 +1,25 @@
+{
+	"geode": "5.7.1",
+	"gd": {
+		"win": "2.2081",
+		"android": "2.2081",
+		"mac": "2.2081",
+		"ios": "2.2081"
+	},
+	"id": "alphalaneous.cleaner-leaderboards",
+	"name": "Cleaner Leaderboards",
+	"version": "v1.0.0",
+	"developer": "Alphalaneous",
+	"description": "Refined Leaderboard UI",
+	"dependencies": {
+		"geode.node-ids": ">=v1.23.3"
+	},
+	"links": {
+		"homepage": "https://linktr.ee/Alphalaneous",
+		"source": "https://github.com/Alphalaneous/CleanerLeaderboards",
+		"community": "https://discord.gg/Txn2CA5dHF"
+	},
+	"tags": [
+		"enhancement", "interface"
+	]
+}
