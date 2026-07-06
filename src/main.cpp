@@ -4,6 +4,14 @@
 
 using namespace geode::prelude;
 
+class MoreLeaderboards : public CCNode {};
+
+bool shouldExclude() {
+	// GDUtils
+	if (CCScene::get()->getChildByType<MoreLeaderboards>(0)) return true;
+	return false;
+}
+
 class $modify(MyGJScoreCell, GJScoreCell) {
 
 	static void onModify(auto& self) {
@@ -100,7 +108,13 @@ class $modify(MyGJScoreCell, GJScoreCell) {
 
     void loadFromScore(GJUserScore* score) {
 		GJScoreCell::loadFromScore(score);
+		addOnEnterCallback([this]  {
+			if (shouldExclude()) return;
+			setupChanges();
+		});
+	}
 
+    void setupChanges() {
 		m_mainLayer->setContentSize({m_width, m_height});
 
 		auto rankLabel = m_mainLayer->getChildByID("rank-label");
@@ -216,6 +230,7 @@ class $modify(MyCustomListView, CustomListView) {
 
     TableViewCell* getListCell(char const* identifier) {
 		auto ret = CustomListView::getListCell(identifier);
+		if (shouldExclude()) return ret;
 
 		if (m_type == BoomListType::Score) {
 			ret->m_height = 35.f;
@@ -226,6 +241,7 @@ class $modify(MyCustomListView, CustomListView) {
 
     static float getCellHeight(BoomListType type) {
 		auto ret = CustomListView::getCellHeight(type);
+		if (shouldExclude()) return ret;
 
 		if (type == BoomListType::Score) {
 			return 35.f;

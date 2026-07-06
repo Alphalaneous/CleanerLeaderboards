@@ -1,3 +1,6 @@
+# 1.0.3
+- Add GDUtils exclusion
+
 # 1.0.2
 - Add SendDB support
 
