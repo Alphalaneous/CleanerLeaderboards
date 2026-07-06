@@ -139,7 +139,7 @@ class $modify(MyGJScoreCell, GJScoreCell) {
 			mainMenu->setContentSize({m_width - 100, m_height});
 			mainMenu->ignoreAnchorPointForPosition(false);
 			mainMenu->setAnchorPoint({0, 0.5});
-			mainMenu->setScale(0.62f);
+			mainMenu->setScale(0.7f);
 			mainMenu->setLayout(SimpleRowLayout::create()
 				->setMainAxisAlignment(MainAxisAlignment::Start)
 			);
@@ -152,6 +152,7 @@ class $modify(MyGJScoreCell, GJScoreCell) {
 		statsContainer->setAnchorPoint({1.f, 0.5f});
 		statsContainer->setPosition({m_width - 5, m_height / 2.f});
 		statsContainer->setID("stats-container");
+		statsContainer->setScale(0.9f);
 
 		statsContainer->setLayout(RowLayout::create()
 			->setCrossAxisOverflow(false)
@@ -191,13 +192,13 @@ class $modify(MyGJScoreCell, GJScoreCell) {
 		m_mainLayer->addChild(statsContainer);
 
 		auto verticalStatsContainer = CCNode::create();
-		verticalStatsContainer->setContentSize({30, m_height - 10});
+		verticalStatsContainer->setContentSize({40, m_height});
 		verticalStatsContainer->setAnchorPoint({1.f, 0.5f});
 		verticalStatsContainer->setPosition({statsContainer->getPositionX() - statsContainer->getScaledContentWidth() - 2, m_height / 2});
 		verticalStatsContainer->setID("vertical-stats-container");
 
 		verticalStatsContainer->setLayout(SimpleRowLayout::create()
-			->setGap(5.f)
+			->setGap(2.f)
 			->setMainAxisAlignment(MainAxisAlignment::Start)
 			->setMainAxisDirection(AxisDirection::RightToLeft)
 			->setMainAxisScaling(AxisScaling::ScaleDown)
@@ -211,11 +212,22 @@ class $modify(MyGJScoreCell, GJScoreCell) {
 		auto sends = createVerticalStatContainer("sorkopiko.senddb/sends");
 		if (sends) {
 			verticalStatsContainer->addChild(sends);
-			if (mainMenu) {
-				mainMenu->setScale(0.52f);
-			}
 		}
 		
+		Ref<CCNode> betterProgression = m_mainLayer->getChildByID("itzkiba.better_progression/tier-badge");
+		if (betterProgression) {
+			betterProgression->removeFromParentAndCleanup(false);
+			betterProgression->setScale(0.37f);
+			betterProgression->setZOrder(-1);
+			verticalStatsContainer->addChild(betterProgression);
+		}
+
+		if (verticalStatsContainer->getChildrenCount() > 1) {
+			if (mainMenu) {
+				mainMenu->setScale(0.6f);
+			}
+		}
+
 		verticalStatsContainer->updateLayout();
 		m_mainLayer->addChild(verticalStatsContainer);
 	}

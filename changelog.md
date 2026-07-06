@@ -1,3 +1,6 @@
+# 1.0.4
+- Add BetterProgression support
+
 # 1.0.3
 - Add GDUtils exclusion
 
