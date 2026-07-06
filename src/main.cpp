@@ -173,6 +173,12 @@ class $modify(MyGJScoreCell, GJScoreCell) {
 };
 
 class $modify(MyCustomListView, CustomListView) {
+
+	static void onModify(auto& self) {
+		(void) self.setHookPriorityPost("CustomListView::getListCell", Priority::VeryLate);
+		(void) self.setHookPriorityPost("CustomListView::getCellHeight", Priority::VeryLate);
+	}
+
     TableViewCell* getListCell(char const* identifier) {
 		auto ret = CustomListView::getListCell(identifier);
 
@@ -184,9 +190,11 @@ class $modify(MyCustomListView, CustomListView) {
 	}
 
     static float getCellHeight(BoomListType type) {
+		auto ret = CustomListView::getCellHeight(type);
+
 		if (type == BoomListType::Score) {
 			return 35.f;
 		}
-		return CustomListView::getCellHeight(type);
+		return ret;
 	}
 };
