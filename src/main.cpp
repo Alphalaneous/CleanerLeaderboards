@@ -57,6 +57,47 @@ class $modify(MyGJScoreCell, GJScoreCell) {
 		return container;
 	}
 
+	CCNode* createVerticalStatContainer(ZStringView ID) {
+		auto container = CCNode::create();
+		container->setLayout(SimpleColumnLayout::create()
+			->setMainAxisScaling(AxisScaling::None)
+			->setCrossAxisScaling(AxisScaling::None)
+			->setMainAxisAlignment(MainAxisAlignment::Center)
+		);
+		container->setID(fmt::format("{}-container", ID));
+
+		container->setContentSize({20, m_height});
+		container->setAnchorPoint({1.f, 0.5f});
+		container->setScale(0.8f);
+
+		auto statsMenu = m_mainLayer->getChildByID("stats-menu");
+		if (statsMenu) {
+			Ref<CCNode> icon = statsMenu->getChildByID(fmt::format("{}-icon", ID));
+			Ref<CCNode> label = statsMenu->getChildByID(fmt::format("{}-label", ID));
+
+			if (!icon || !label) return nullptr;
+			
+			icon->removeFromParent();
+			label->removeFromParent();
+
+			static_cast<CCLabelBMFont*>(label.data())->limitLabelWidth(20, 0.35f, 0.01f);
+
+			auto iconContainer = CCNode::create();
+			iconContainer->setID(fmt::format("{}-icon-container", ID));
+			iconContainer->setContentSize({20, 20});
+			iconContainer->addChild(icon);
+
+			icon->setPosition(iconContainer->getContentSize() / 2);
+
+			container->addChild(iconContainer);
+			container->addChild(label);
+			
+			container->updateLayout();
+		}
+
+		return container;
+	}
+
     void loadFromScore(GJUserScore* score) {
 		GJScoreCell::loadFromScore(score);
 
@@ -132,43 +173,37 @@ class $modify(MyGJScoreCell, GJScoreCell) {
 				break;
 		}
 
-		auto creatorPointsContainer = CCNode::create();
-		creatorPointsContainer->setLayout(SimpleColumnLayout::create()
-			->setGap(5.f)
-			->setMainAxisScaling(AxisScaling::None)
-			->setCrossAxisScaling(AxisScaling::None)
-			->setMainAxisAlignment(MainAxisAlignment::Center)
-		);
-		creatorPointsContainer->setID("creator-points-container");
-
-		creatorPointsContainer->setContentSize({20, m_height});
-		creatorPointsContainer->setAnchorPoint({1.f, 0.5f});
-		creatorPointsContainer->setPosition({statsContainer->getPositionX() - statsContainer->getScaledContentWidth() - 2, m_height / 2});
-		creatorPointsContainer->setScale(0.8f);
-
-		auto statsMenu = m_mainLayer->getChildByID("stats-menu");
-		if (statsMenu) {
-			Ref<CCNode> creatorPointIcon = statsMenu->getChildByID("creator-points-icon");
-			Ref<CCNode> creatorPointLabel = statsMenu->getChildByID("creator-points-label");
-
-			if (creatorPointIcon && creatorPointLabel) {
-				creatorPointIcon->removeFromParent();
-				creatorPointLabel->removeFromParent();
-
-				static_cast<CCLabelBMFont*>(creatorPointLabel.data())->limitLabelWidth(20, 0.35f, 0.01f);
-
-				creatorPointsContainer->addChild(creatorPointIcon);
-				creatorPointsContainer->addChild(creatorPointLabel);
-				
-				creatorPointsContainer->updateLayout();
-
-				m_mainLayer->addChild(creatorPointsContainer);
-			}
-		}
-
 		statsContainer->updateLayout();
 		m_mainLayer->addChild(statsContainer);
 
+		auto verticalStatsContainer = CCNode::create();
+		verticalStatsContainer->setContentSize({30, m_height - 10});
+		verticalStatsContainer->setAnchorPoint({1.f, 0.5f});
+		verticalStatsContainer->setPosition({statsContainer->getPositionX() - statsContainer->getScaledContentWidth() - 2, m_height / 2});
+		verticalStatsContainer->setID("vertical-stats-container");
+
+		verticalStatsContainer->setLayout(SimpleRowLayout::create()
+			->setGap(5.f)
+			->setMainAxisAlignment(MainAxisAlignment::Start)
+			->setMainAxisDirection(AxisDirection::RightToLeft)
+			->setMainAxisScaling(AxisScaling::ScaleDown)
+		);
+
+		auto creatorPoints = createVerticalStatContainer("creator-points");
+		if (creatorPoints) {
+			verticalStatsContainer->addChild(creatorPoints);
+		}
+
+		auto sends = createVerticalStatContainer("sorkopiko.senddb/sends");
+		if (sends) {
+			verticalStatsContainer->addChild(sends);
+			if (mainMenu) {
+				mainMenu->setScale(0.52f);
+			}
+		}
+		
+		verticalStatsContainer->updateLayout();
+		m_mainLayer->addChild(verticalStatsContainer);
 	}
 };
 
