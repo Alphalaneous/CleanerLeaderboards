@@ -115,11 +115,17 @@ class $modify(MyGJScoreCell, GJScoreCell) {
 	}
 
     void setupChanges() {
+		float leftOffset = 0;
+
+		if (m_score->m_playerRank != 0) {
+			leftOffset = 15;
+		}
+
 		m_mainLayer->setContentSize({m_width, m_height});
 
 		auto rankLabel = m_mainLayer->getChildByID("rank-label");
 		if (rankLabel) {
-			rankLabel->setPosition({20, m_height / 2.f + 2});
+			rankLabel->setPosition({5 + leftOffset, m_height / 2.f + 2});
 			static_cast<CCLabelBMFont*>(rankLabel)->limitLabelWidth(24, 0.5f, 0.01f);
 		}
 
@@ -129,7 +135,7 @@ class $modify(MyGJScoreCell, GJScoreCell) {
 		}
 
 		if (player) {
-			player->setPosition({50, m_height / 2.f});
+			player->setPosition({35 + leftOffset, m_height / 2.f});
 			player->setContentSize({0, 0});
 			player->setScale(0.65f);
 		}
@@ -144,7 +150,7 @@ class $modify(MyGJScoreCell, GJScoreCell) {
 				->setMainAxisAlignment(MainAxisAlignment::Start)
 			);
 			mainMenu->updateLayout();
-			mainMenu->setPosition({68, m_height / 2.f + 2});
+			mainMenu->setPosition({53 + leftOffset, m_height / 2.f + 2});
 		}
 
 		auto statsContainer = CCNode::create();
@@ -238,6 +244,18 @@ class $modify(MyCustomListView, CustomListView) {
 	static void onModify(auto& self) {
 		(void) self.setHookPriorityPost("CustomListView::getListCell", Priority::VeryLate);
 		(void) self.setHookPriorityPost("CustomListView::getCellHeight", Priority::VeryLate);
+	}
+
+    static CustomListView* create(cocos2d::CCArray* entries, TableViewCellDelegate* delegate, float height, float width, int page, BoomListType type, float y) {
+		if (type == BoomListType::Score) {
+			for (int i = entries->count() - 1; i >= 0; --i) {
+				auto entry = static_cast<GJUserScore*>(entries->objectAtIndex(i));
+				if (entry->m_accountID == 0) {
+					entries->removeObjectAtIndex(i);
+				}
+			}
+		}
+		return CustomListView::create(entries, type, height, width);
 	}
 
     TableViewCell* getListCell(char const* identifier) {

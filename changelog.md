@@ -1,3 +1,7 @@
+# 1.0.5
+- Fix blank user vanilla bug
+- Fix how users look in search
+
 # 1.0.4
 - Add BetterProgression support
 
