@@ -1,3 +1,6 @@
+# 1.0.6
+- Add Icon Badges support
+
 # 1.0.5
 - Fix blank user vanilla bug
 - Fix how users look in search

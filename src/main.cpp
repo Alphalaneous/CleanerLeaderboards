@@ -117,14 +117,11 @@ class $modify(MyGJScoreCell, GJScoreCell) {
     void setupChanges() {
 		float leftOffset = 0;
 
-		if (m_score->m_playerRank != 0) {
-			leftOffset = 15;
-		}
-
 		m_mainLayer->setContentSize({m_width, m_height});
 
 		auto rankLabel = m_mainLayer->getChildByID("rank-label");
 		if (rankLabel) {
+			leftOffset = 15;
 			rankLabel->setPosition({5 + leftOffset, m_height / 2.f + 2});
 			static_cast<CCLabelBMFont*>(rankLabel)->limitLabelWidth(24, 0.5f, 0.01f);
 		}
@@ -218,6 +215,19 @@ class $modify(MyGJScoreCell, GJScoreCell) {
 		auto sends = createVerticalStatContainer("sorkopiko.senddb/sends");
 		if (sends) {
 			verticalStatsContainer->addChild(sends);
+		}
+
+		auto iconsLabel = m_mainLayer->getChildByID("hiimjasmine00.icon_badges/icons-label");
+		if (iconsLabel) {
+			iconsLabel->setScale(0.3f);
+			if (mainMenu) {
+				mainMenu->setContentHeight(20);
+				mainMenu->setPositionY(17.f);
+				mainMenu->setAnchorPoint({0.f, 0.f});
+				mainMenu->updateLayout();
+				iconsLabel->setAnchorPoint({0.f, 1.f});
+				iconsLabel->setPosition({mainMenu->getPositionX(), 15});
+			}
 		}
 		
 		Ref<CCNode> betterProgression = m_mainLayer->getChildByID("itzkiba.better_progression/tier-badge");

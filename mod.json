@@ -7,7 +7,7 @@
 	},
 	"id": "alphalaneous.cleaner-leaderboards",
 	"name": "Cleaner Leaderboards",
-	"version": "v1.0.5",
+	"version": "v1.0.6",
 	"developer": "Alphalaneous",
 	"description": "Refined Leaderboard UI",
 	"dependencies": {
