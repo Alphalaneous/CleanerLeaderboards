@@ -265,7 +265,7 @@ class $modify(MyCustomListView, CustomListView) {
 				}
 			}
 		}
-		return CustomListView::create(entries, type, height, width);
+		return CustomListView::create(entries, delegate, height, width, page, type, y);
 	}
 
     TableViewCell* getListCell(char const* identifier) {

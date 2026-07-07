@@ -1,5 +1,6 @@
 # 1.0.6
 - Add Icon Badges support
+- Fix SFX browser breaking lol
 
 # 1.0.5
 - Fix blank user vanilla bug
